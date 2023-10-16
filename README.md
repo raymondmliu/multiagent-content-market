@@ -16,7 +16,7 @@ $$T = (0, 1) \subseteq R.$$
 
 Note that we consider the closeness between any two topics $x, y \in T$ to be the distance $|x-y|$.
 
-Furthermore, for each community member, we identify them by a main interest $y \in T$.
+Furthermore, for each community member, we identify them by a main interest $y \in T$, denoted by $x(y)$.
 
 The probability that a community member $y \in T$ is interested in consuming content on topic $x \in T$ is:
 $$p(x|y) = f(|x-y|)$$
