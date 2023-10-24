@@ -56,3 +56,7 @@ Describe what they are.]
 # Contributions
 
 [TODO: Who wrote this?]
+
+# List of assumptions made
+
+- $f(x) = g(x) = 1-x$. These functions $f, g : \mathbb{R}_+ \rightarrow [0,1]

@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from mesa import Agent, Model
-from mesa.time import RandomActivation
 from scipy.optimize import minimize
 from mesa.datacollection import DataCollector
 
+from scheduler import AlternatingScheduler
 from constants import *
 
 
@@ -45,12 +45,14 @@ class MemberAgent(Agent):
     )
     bounds = ((0.0, self.model.M) for _ in range(self.model.num_members + 2))
 
-    result = minimize(calc_util, x_0, constraints=constraints, bounds=bounds)
+    result = minimize(calc_util, x_0, constraints=constraints, bounds=bounds, method=self.model.min_params['method'])
     self.consumer_utility = -result.fun
     self.model.mems_alloc[self.unique_id] = result.x
 
   def optimize_prod_util(self):
-    # Calculate utility obtained by 
+    """Calculate producer social support
+    Given: this agent produces content on topic x[0]
+    """
     # x[0]: the topic this agent produces content on
     def calc_util(x):
       def B(cons_id):
@@ -80,7 +82,7 @@ class MemberAgent(Agent):
     constraints = ()
     bounds = [(0.0, 1.0)]
 
-    result = minimize(calc_util, x_0, constraints=constraints, bounds=bounds)
+    result = minimize(calc_util, x_0, constraints=constraints, bounds=bounds, method=self.model.min_params['method'])
     self.producer_utility = -result.fun
     self.model.prod_topics[self.unique_id] = result.x[0]
   
@@ -88,6 +90,8 @@ class MemberAgent(Agent):
     self.optimize_cons_util()
     self.optimize_prod_util()
     self.model.populate_B()
+    if self.model.v:
+      print(f"  Updated member {self.unique_id}")
 
 
 
@@ -99,7 +103,11 @@ class InfluencerAgent(Agent):
     self.utility = 0.0
   
   def optimize(self):
+    """Calculate total social support received from content consumers who follow this influencer
+    Given: influencer rate allocation x
+    """
     def calc_util(x):
+      # Calculate social support given a specific producer and consumer
       def calc_inf_util(prod_id, cons_id):
         return self.model.B[prod_id, cons_id] * np.exp(-ALPHA * (1/x[prod_id] + 1/self.model.mems_alloc[cons_id, -2])) \
           if (x[prod_id] and self.model.mems_alloc[cons_id, -2]) else 0
@@ -115,36 +123,42 @@ class InfluencerAgent(Agent):
     )
     bounds = ((0.0, self.model.M_INFL) for _ in range(self.model.num_members))
 
-    result = minimize(calc_util, x_0, constraints=constraints, bounds=bounds)
+    result = minimize(calc_util, x_0, constraints=constraints, bounds=bounds, method=self.model.min_params['method'])
 
     self.utility = -result.fun
     self.model.infl_alloc = result.x
 
   def step(self):
     self.optimize()
+    if self.model.v:
+      print("  Updated influencer")
 
 
 class ContentMarketModel(Model):
-  def __init__(self, mems_alloc, infl_alloc, prod_topics, num_steps, num_members, M, M_INFL, is_perf):
-    self.num_steps = num_steps
-    self.num_members = num_members
-    self.M = M
-    self.M_INFL = M_INFL
-    self.main_topics = np.random.rand(num_members)
-    self.is_perf = is_perf
+  def __init__(self, params, main_topics, prod_topics, mems_alloc, infl_alloc, min_params, f, g):
+    self.num_members = params['num_members']
+    self.M = params['M']
+    self.M_INFL = params['M_INFL']
+    self.is_perf = params['is_perfect'] # whether model is perfect information
+    self.v = params['verbose']
+    self.f = f
+    self.g = g
 
+    self.min_params = min_params
+
+    self.main_topics = main_topics
     self.initialize_rate_allocs(mems_alloc, infl_alloc, prod_topics)
 
     self.B = np.zeros((self.num_members, self.num_members))
 
-    self.schedule = RandomActivation(self)
+    self.members = [MemberAgent(i, self) for i in range(self.num_members)]
+    self.influencer = InfluencerAgent(self.num_members, self)
 
-    for i in range(self.num_members):
-      community_member = MemberAgent(i, self)
-      self.schedule.add(community_member)
-    
-    influencer = InfluencerAgent(self.num_members, self)
-    self.schedule.add(influencer)
+    self.schedule = AlternatingScheduler(self, params['influencer_update_frequency'])
+    # create and schedule agents
+    for m in self.members:
+      self.schedule.add(m)
+    self.schedule.add(self.influencer)
 
     self.datacollector = DataCollector(
       agent_reporters = {
@@ -152,7 +166,7 @@ class ContentMarketModel(Model):
         "Producer Social Support": lambda agent: agent.producer_utility if isinstance(agent, MemberAgent) else None,
         "Influencer Utility": lambda agent: agent.utility if isinstance(agent, InfluencerAgent) else None,
       },
-      model_reporters={"ModelVariable": lambda m: m.schedule.steps}
+      model_reporters={"Total Social Welfare": lambda m: m.total_welfare}
     )
   
   """
@@ -186,12 +200,19 @@ class ContentMarketModel(Model):
                                 * self.p(self.prod_topics[prod_id], cons_id)
 
   def step(self):
+    self.calc_total_social_welfare()
     self.datacollector.collect(self)
+    if self.v:
+      print(f'Step {self.schedule.steps}:')
     self.schedule.step()
   
+  def calc_total_social_welfare(self):
+    self.total_welfare = sum(m.consumer_utility for m in self.members)
+    return self.total_welfare
+  
   def p(self, content_item, cons_id):
-    return f(np.absolute(content_item - self.main_topics[cons_id]))
+    return self.f(np.absolute(content_item - self.main_topics[cons_id]))
 
   def q(self, content_item, prod_id):
-    return g(np.absolute(content_item - self.main_topics[prod_id]))
+    return self.g(np.absolute(content_item - self.main_topics[prod_id]))
 
