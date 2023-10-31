@@ -23,7 +23,7 @@ class AlternatingScheduler(BaseScheduler):
             if (self.cur_member_id == self.model.num_members):
                 # reset to the first member
                 self.cur_member_id = 0
-            
+
             self.model.members[self.cur_member_id].step()
             
             self.cur_member_id += 1
