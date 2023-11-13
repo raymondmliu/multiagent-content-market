@@ -1,0 +1,18 @@
+\contentsline {section}{\numberline {1}Summary}{2}{section.1}%
+\contentsline {section}{\numberline {2}Model}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Background}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Mathematical intuition}{5}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Consumer utility}{6}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Social support}{7}{subsubsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.3}The optimization problem}{8}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Perfect and limited information}{9}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Multiagent model}{9}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Parameters}{10}{subsection.3.1}%
+\contentsline {section}{\numberline {4}Results}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Community size}{14}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Outside sources}{15}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Consumer interest function}{16}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Producer interest function}{17}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Rate budgets}{18}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Limited information}{19}{subsection.4.6}%
+\contentsline {section}{\numberline {5}Conclusion}{22}{section.5}%
