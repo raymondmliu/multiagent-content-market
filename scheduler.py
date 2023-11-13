@@ -1,35 +1,57 @@
 from mesa.time import BaseScheduler
+from enum import IntEnum
 import random
+import numpy as np
 
-class AlternatingScheduler(BaseScheduler):
-    def __init__(self, model, frequency):
+class AgentType(IntEnum):
+  CONSUMER = 1
+  INFLUENCER = 2
+  PRODUCER = 3
+
+
+class CustomScheduler(BaseScheduler):
+    def __init__(self, model):
         super().__init__(model)
 
-        self.frequency = frequency # number of agents to be updated before influencer is updated
-        self.counter_to_next_inf_step = self.frequency 
-        self.cur_member_id = 0
+        self.agent_type_to_update = AgentType.CONSUMER
 
-        random.seed(0)
-
+    """
+    Update one class of agents in one step: consumers, influencer, or producer.
+    Return whether the updated agents are within the convergence criteria of the previous agents
+    """
     def step(self):
-        """Step the agents in an alternating pattern.
-        For each member: update the member, then update the influencer."""
+        if self.model.v:
+            print(f'Updating {self.agent_type_to_update.name}')
+        
+        step_converged = False
 
-        if (self.counter_to_next_inf_step == 0): 
-            # update influencer!
+        if (self.agent_type_to_update == AgentType.CONSUMER):
+            cur_alloc = self.model.mems_alloc.copy()
+            for n in range(self.model.num_members):
+                self.model.consumers[n].step()
+            step_converged = self.converged(cur_alloc, self.model.mems_alloc) 
+
+        elif (self.agent_type_to_update == AgentType.INFLUENCER):
+            cur_alloc = self.model.infl_alloc.copy()
             self.model.influencer.step()
-            self.counter_to_next_inf_step = self.frequency
-        else: # update the next member agent
-            if (self.cur_member_id == self.model.num_members):
-                # reset to the first member
-                self.cur_member_id = 0
+            step_converged = self.converged(cur_alloc, self.model.infl_alloc)
 
-            self.model.members[self.cur_member_id].step()
-            
-            self.cur_member_id += 1
-            self.counter_to_next_inf_step -= 1
+        elif (self.agent_type_to_update == AgentType.PRODUCER):
+            cur_alloc = self.model.prod_topics.copy()
+            for n in range(self.model.num_members):
+                self.model.producers[n].step()
+            step_converged = self.converged(cur_alloc, self.model.prod_topics)
+        else:
+            raise ValueError()
+
+        self.agent_type_to_update = AgentType((self.agent_type_to_update) % len(AgentType) + 1)
         
         self.steps += 1
         self.time += 1
+
+        return step_converged
+
+    def converged(self, arr1, arr2):
+        return np.allclose(arr1, arr2)
 
         

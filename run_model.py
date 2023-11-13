@@ -10,12 +10,11 @@ default_min_params = {
 }
 
 default_params = {
-    'num_members': 15,          # Number of community members
+    'num_members': 10,          # Number of community members
     'M': 5.0,                   # Rate budget for consumer
-    'M_INFL': 25.0,             # Rate limit for influencer
+    'M_INFL': 10.0,             # Rate limit for influencer
     'info_access': InfoAccessEnum.PERFECT,         # Perfect information or not
     'verbose': False, 
-    'infl_update_frequency': 5, # How many times member updates before an influencer updates
     'B_0': 0.75,                 # Prob. that content produced from outside sources is of interest to content consumers
     'ALPHA': 1.0,               # Delay sensitivity
     'R_P': 1.0,                 # Rate at which content producers create new content
@@ -39,7 +38,6 @@ def run_model(num_members = default_params['num_members'],
                 M_INFL = default_params['M_INFL'],
                 info_access = default_params['info_access'],
                 verbose = default_params['verbose'],
-                infl_update_frequency = default_params['infl_update_frequency'],
                 B_0 = default_params['B_0'],
                 ALPHA = default_params['ALPHA'],
                 R_P = default_params['R_P'],
@@ -48,7 +46,7 @@ def run_model(num_members = default_params['num_members'],
                 g = default_g,
                 is_random_init = False,
                 max_num_steps = 100,
-                convergence_steps = 20,
+                convergence_steps = 10,
                 ):
     
     params = {
@@ -57,7 +55,6 @@ def run_model(num_members = default_params['num_members'],
         'M_INFL': M_INFL,             # Rate limit for influencer
         'info_access': info_access,         # Perfect information or not
         'verbose': verbose, 
-        'infl_update_frequency': infl_update_frequency, # How many times member updates before an influencer updates
         'B_0': B_0,                 # Prob. that content produced from outside sources is of interest to content consumers
         'ALPHA': ALPHA,               # Delay sensitivity
         'R_P': R_P,                 # Rate at which content producers create new content
@@ -65,7 +62,6 @@ def run_model(num_members = default_params['num_members'],
     }
 
     main_topics = np.linspace(-1.0, 1.0, num_members)
-    # main_topics = np.random.rand(num_members)
 
     if is_random_init:
         prod_topics = np.random.rand(num_members)
@@ -74,8 +70,9 @@ def run_model(num_members = default_params['num_members'],
     else:
         # prod_topics = np.zeros(num_members)
         prod_topics = main_topics.copy()
-        infl_alloc = np.ones(num_members) * (M_INFL / (num_members + 1))
-        mems_alloc = np.ones((num_members, num_members + 2))  * (M / (num_members + 3))
+        infl_alloc = np.ones(num_members) * (M_INFL / (num_members + 0))
+        mems_alloc = np.ones((num_members, num_members + 2))  * (M / (num_members + 2))
+
 
     model = ContentMarketModel(
         params = params,
@@ -85,38 +82,30 @@ def run_model(num_members = default_params['num_members'],
         mems_alloc = mems_alloc,
         min_params = default_min_params,
         f = f,
-        g = g
+        g = g,
+        conv_steps = convergence_steps,
     )
 
-    total_alloc = M_INFL + M * num_members
-    convergence_criteria = total_alloc * 0.001
-    convergence_counter = 0
-    converged = False
 
-    total_welfare = model.total_welfare
+    model_converged = False
 
     for i in range(max_num_steps):
         total_welfare = model.total_welfare
-        model.step()
-
-        if np.abs(model.total_welfare - total_welfare) < convergence_criteria:
-            convergence_counter += 1
-            if convergence_counter > convergence_steps:
-                converged = True
-                break
-        else:
-            convergence_counter = 0
+        model_converged = model.step()
+        if model_converged:
+            break
     
-    if not converged:
+    if not model_converged:
         print("Did not converge!")
     
     return model
 
 
-def plot_number_line_with_indexed_clustering(values, threshold=0.005):
+def plot_topics(model, title, threshold=0.005, file=None):
     """Plot scalar values on a number line with clustering for close values and annotate with indices."""
 
     # First, sort the values along with their indices
+    values = model.prod_topics.copy()
     indexed_values = sorted(enumerate(values), key=lambda x: x[1])
 
     clusters = []
@@ -153,11 +142,13 @@ def plot_number_line_with_indexed_clustering(values, threshold=0.005):
         plt.text(center, text_position, indices_str, horizontalalignment='center', verticalalignment='bottom')
         prev_text_position = center
 
-    plt.title("Producer topics allocation")
+    plt.title(f"Producer topic allocation with {title}, social welfare = {model.total_welfare:.2f}")
+    if file:
+        plt.savefig(f'paper/figures/{file}_topics.jpg')
     plt.show()
 
 
-def graph_model(model, title):
+def graph_model(model, title, file=None):
     # Create a new directed graph
     G = nx.DiGraph()
 
@@ -196,13 +187,13 @@ def graph_model(model, title):
     scale = model.num_members * 0.5
 
     for i in range(model.num_members):
-        pos[f'C_{i}'] = (0, i*scale)
-        pos[f'P_{i}'] = (5, i*scale)
-    pos['infl'] = (2.5, model.num_members*scale/2)
-    pos['out'] = (-2.5, model.num_members*scale/2)
+        pos[f'C_{i}'] = (-scale, i*scale)
+        pos[f'P_{i}'] = (scale, i*scale)
+    pos['infl'] = (0, model.num_members*scale/2)
+    pos['out'] = (-scale*2, model.num_members*scale/2)
 
-    plt.figure(figsize=(10, model.num_members * 0.7))
-    plt.title(f'{title}, social welfare = {model.total_welfare:.2f}')
+    plt.figure(figsize=(scale*1.5, scale*1.5))
+    plt.title(f'Rate allocations with {title}, social welfare = {model.total_welfare:.2f}')
 
     nx.draw(G, pos, 
             with_labels=True, 
@@ -211,5 +202,11 @@ def graph_model(model, title):
             width=[data['weight'] * 3 for _, _, data in G.edges(data=True)], 
             edge_color=[data['color'] for _, _, data in G.edges(data=True)], 
             connectionstyle="arc3,rad=0")
+
+    if file:
+        plt.savefig(f'paper/figures/{file}_allocs.jpg')
+    plt.show()
+
+    plot_topics(model, title=title, file=file)
     
-    plot_number_line_with_indexed_clustering(model.prod_topics, threshold=0.005)
+    #plot_number_line_with_indexed_clustering(model.prod_topics, threshold=0.005)
