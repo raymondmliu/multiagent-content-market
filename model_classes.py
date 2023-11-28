@@ -141,7 +141,7 @@ class ProducerAgent(Agent):
     else:
       self.optimize_prod_util()
     
-    self.producer_utility = self.calc_prod_util()
+    self.utility = self.calc_prod_util()
 
     self.model.B = self.model.calc_B(self.model.prod_topics)
     if self.model.v:
@@ -186,7 +186,7 @@ class ConsumerAgent(Agent):
     bounds = ((0.0, self.model.M) for _ in range(self.model.num_members + 2))
 
     result = minimize(calc_util, x_0, constraints=constraints, bounds=bounds, method=self.model.min_params['method'])
-    self.consumer_utility = -result.fun
+    self.utility = -result.fun
     self.model.mems_alloc[self.mem_id] = result.x
 
 
@@ -295,7 +295,7 @@ class ContentMarketModel(Model):
 
     self.B = self.calc_B(self.prod_topics)
     for c in self.consumers:
-      c.consumer_utility = c.calc_cons_util()
+      c.utility = c.calc_cons_util()
     self.calc_total_social_welfare()
 
     self.datacollector = DataCollector(

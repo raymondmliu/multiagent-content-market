@@ -57,6 +57,14 @@ Our work takes this model and implements it computationally as a multiagent syst
     \item When the producers are unable to directly see how much support they receive from the community, and instead must rely on the influencer's following for them as an information proxy: this creates a hierarchy within the community, in which those with interests closer to the average benefit more whereas those with fringe interests seek outside sources.
 \end{itemize}
 
+We then compare the social supports and consumer allocations in our model with the ones given within an empirical model of Twitter as a content market, and we attempt to find the set of parameters that match the empirical model most closely. Overall, our model does not closely match with the empirical model, likely due to the amount of randomness and noise. However, we do find some trends, and we conclude that the empirical model of the Twittter community: 
+\begin{itemize}
+    \item Consumers are broadly interested in many topics within the community, beyond just their main interest.
+    \item Whether producers are more or less capable of producing content on topics close to their main interest does not matter significantly.
+    \item Influencers and consumers have the same total attention; influencers do not put significantly more attention in the community than consumers.
+    \item Producers use the influencer's following as an information proxy on the support they receive, rather than directly optimizing for support from the entire community.
+\end{itemize}
+
 \pagebreak
 
 \section{Model}
@@ -142,6 +150,8 @@ In order for the agents to effectively optimization their allocations, they must
 However, this assumption may not reflective of an actual social network. Particularly in a large community, it is unrealistic to assume that a producer can observe the actions of each and every consumer. More realistically, we consider a \textbf{limited information} model in which the producer uses the influencer's rate allocations as a proxy for the social support they receive.
 
 In this case, the content producer no longer optimizes the topic they produce content on to maximize the social support from all consumers. Instead, they optimize their topic to maximize the social support they receive from the influencer. The paper proves that this case does converge to a Nash equilibrium; however, the optimal equilibrium no longer maximizes the total social welfare like before.
+
+\pagebreak
 
 \section{Multiagent model}
 
@@ -421,6 +431,214 @@ A similar pattern of differing behaviour due to proximity from the average is sh
 \Cref{fig:lim_allocs_colormap} displays this same consumer rate allocation as a colormap. The same trends can be seen in a different way. For limited information, more attention is being placed to the influencer (the lighter colours on the column second to the right). However, there is differing behaviours depending on how close the consumer is to the average (how close the row is to the middle). The consumers in the middle rows increase their following to producers (increasing the blue/green squares in the middle) and decrease their following to outside sources (the dark squares in the rightmost column). However, the consumers in the top and bottom rows decrease their following to producers (darkening most squares) while increasing their following to outside sources and the influencer (the rightmost two columns).
 
 Therefore, the limited information case increases the community engagement of those with main interests close to the community average; however, it decreases the community engagement of those further away from the average. In essence, shifting the producer's focus from optimizing for the community to optimizing for the influencer creates a hierarchy within the community: those who are already served well by the community are able to extract even more value from it, whereas the ones with more fringe interests are forced to look elsewhere.
+
+\pagebreak
+
+\section{Comparison with empirical results}
+
+The paper \textit{Final Report} applies this content market model to a real-life Twitter community, using Twitter data. It takes a community--a specific set of users--and considers the tweets made by members within this community as the content within the content market. The social support is indicated by the number of retweets for the different tweets.
+
+For our analysis, we will focus on the empirical results given in that paper for community 4 (as listed in the paper), which is a community centred around the topic of machine learning. The paper creates a content market model using the 59123 tweets produced by this 196-member community within the months of June 2020 and April 2023 (inclusive). 
+
+Note that the empirical model assumes the existence of multiple influencers within a community, which differs from the single-influencer assumption of our model.
+
+Our goal is to find the parameters of our model that will most closely align with the empirical model. To do, we investigate two different plots given by
+
+\subsection{Consumer allocations}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/rachel_heatmap.png}
+    \caption{The empirical consumer allocations}
+    \label{fig:rachel_heatmap}
+\end{figure}
+
+\Cref{fig:rachel_heatmap} displays the empirical consumer allocations as a heatmap, as given within \textit{Final Report}. Note that it differs from the consumer allocations we have shown previously in our paper (for example in \cref{fig:lim_allocs_colormap}). Because there are many more than 10 users, it bins the users using their social support rank. This means that bin 0 aggregates data for the users with the top social supports, bin 1 aggregates data for the users with the next highest social supports, and so on. Outside sources are ignored. Each block at row \(i\) and column \(j\) therefore represents the rate at which consumers in bin \(i\) follow producers in bin \(j\). Furthermore, the influencers are set to be bin 0, meaning that they are treated just to be the users with the highest social support.
+
+We also display our data in a similar way. While we still use individual users instead of bins, we order our columns based on how close their main interests are to the average; this way, the consumer represented by the first column has the closest main interest to the average main interest, the consumer represented by the second column is the second closest, and so on. The same is done for the producers. As discussed previously, members with main interests closer to the average have more social support and devote more attention to the community, so this ordering matches with the ordering of users in the empirical heatmap.
+
+We also set our model to have 9 members and 1 influencer (to match with the 10 bins in \cref{fig:rachel_heatmap}), and to have the influencer and consumer rate budget both be \(5.0\). We will experiment with different values later on. 
+
+\subsubsection{Consumer interest functions}
+
+\begin{figure}[h]
+    \centering
+\begin{adjustbox}{max width=1.5\textwidth,center}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/f/descending rapidly_heatmap.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/f/linear_heatmap.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/f/descending slowly_heatmap.jpg"}
+    \end{subfigure}
+\end{adjustbox}
+\caption{Consumer allocations with different consumer interest functions}
+\label{fig:f_heatmap}
+\end{figure}
+
+\Cref{fig:f_heatmap} represents the consumer allocations with different functions of consumer interest within the community. Note that the sim value represents the cosine similarity between the consumer allocations within our model and the empirical model; a higher cosine similarity indicates our model being closer to the empirical model.
+
+It is obvious that the more slowly the consumer interest function descends (i.e. the more a consumer is interested in topics outside of their main interest), the closer our model gets to the empirical model, both visually as well as numerically. Therefore, we can conclude that in the empirical model, users are interested in consuming content in a great variety of topics, not just their main interest. We can also set the consumer interest functions to be the one that descends slowly in the following analysis.
+
+\subsubsection{Producer interest functions}
+
+\begin{figure}[h]
+    \centering
+\begin{adjustbox}{max width=1.5\textwidth,center}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/g/descending rapidly_heatmap.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/g/linear_heatmap.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/g/descending slowly_heatmap.jpg"}
+    \end{subfigure}
+\end{adjustbox}
+\caption{Consumer allocations with different producer interest functions}
+\label{fig:g_heatmap}
+\end{figure}
+
+\Cref{fig:g_heatmap} represents the consumer allocations with different functions for the ability of a producer to produce topics outside of their main interest. It is clear that the producer function does not significantly impact how close the model is to the empirical model; the similarity remains the same, and visually the differences are not very obvious. We could perhaps say that the model where the producer function descends slowly is the closest to empirical, because it displays the strongest trend of colors darkening from left to right, which represents how the consumers closest to the main interest allocate more attention to the community than the consumers further away from the main interest. However, this trend is not strong.
+
+\subsubsection{Influencer rate budgets}\label{sss:M_INFL}
+
+\begin{figure}[h]
+    \centering
+\begin{adjustbox}{max width=1.5\textwidth,center}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/M_INFL/4.0_heatmap.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/M_INFL/5.0_heatmap.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/M_INFL/6.0_heatmap.jpg"}
+    \end{subfigure}
+\end{adjustbox}
+\caption{Different influencer rate budgets, where consumer rate budget = 5.0}
+\label{fig:M_INFL_heatmap}
+\end{figure}
+
+\Cref{fig:g_heatmap} represents the consumer allocations with different influencer rate budgets. Based on the cosine similarities as well as the visual appearance of the heatmaps, the case in which the influencer and consumer rate budgets are both equal to \(5.0\) is the closest to the empirical model. This suggests that in the empirical model, all users have the same amount of total attention to allocate to the community, including the influencer. 
+
+\subsubsection{Perfect and limited information}
+
+\begin{figure}[h]
+    \centering
+\begin{adjustbox}{max width=1.5\textwidth,center}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/lim/1_heatmap.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/lim/2_heatmap.jpg"}
+    \end{subfigure}
+\end{adjustbox}
+\caption{Consumer allocations for perfect vs. limited information}
+\label{fig:lim_heatmap}
+\end{figure}
+
+For our research, we also tested the cases the producers have perfect access to all the information about consumer social support, as well as when they only have limited information on the influencer's social support. \Cref{fig:lim_heatmap} shows that this makes no difference to the consumer allocations. Note that this may seem to contradict with \cref{fig:lim_allocs_colormap}, which did show a difference in allocations between the perfect and limited information case; however, \cref{fig:lim_allocs_colormap} visualized a model with parameters especially chosen to exaggerate the differences between the perfect and limited information cases, which is different from the parameters of our model.
+
+\subsection{Social Support}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/rachel_supps.png}
+    \caption{The empirical social supports in descending order}
+    \label{fig:rachel_supps}
+\end{figure}
+
+Another set of graphs analyzed within \textit{Final Report} are the graphs of social support in a community, graphed in descending order. This is shown in \cref{fig:rachel_supps}, and there is a clear negative exponential trend for how the social supports decrease. Essentially, a small number of users have lots of social support, whereas most users have minimal social support.
+
+Because of computational constraints and because we are only trying to analyze the general trend, our model will only have 26 agents (25 members and 1 influencer), instead of the 196 within the empirical model. We again set the default influencer and consumer rate budgets to be 5.0, supported by the investigation of \cref{sss:M_INFL}.
+
+\subsubsection{Consumer interest functions}
+
+\begin{figure}[h]
+    \centering
+\begin{adjustbox}{max width=1.5\textwidth,center}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/f/descending rapidly_supps.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/f/linear_supps.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/f/descending slowly_supps.jpg"}
+    \end{subfigure}
+\end{adjustbox}
+\caption{Social supports with different consumer interest functions}
+\label{fig:f_supps}
+\end{figure}
+
+\Cref{fig:f_supps} shows the social supports within our model in descending order. Clearly, the negative exponential trend is not there; most users have relatively high social support, and a small number of users have little to no social support. However, in the case where the consumer interest function decreases slowly, the trend does seem to decrease in a more linear fashion, which is closer to the empirical model. Therefore, we can conclude that in the empirical model, consumers are generally still relatively interested in topics outside their main interest; this agrees with our earlier investigation using the consumer allocation heatmaps. 
+
+\subsubsection{Producer interest functions}
+
+\begin{figure}[h]
+    \centering
+\begin{adjustbox}{max width=1.5\textwidth,center}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/g/descending rapidly_supps.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/g/linear_supps.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/g/descending slowly_supps.jpg"}
+    \end{subfigure}
+\end{adjustbox}
+\caption{Social supports with different producer interest functions}
+\label{fig:g_supps}
+\end{figure}
+
+\Cref{fig:g_supps} shows the the social support graphs with different producer interest functions. We see again that the differences are very small, and that the producer interest function does not play a major role in whether our model is a good approximation of the empirical model, from the perspective of social supports.
+
+\subsubsection{Influencer rate allocations}
+
+\begin{figure}[h]
+    \centering
+\begin{adjustbox}{max width=1.5\textwidth,center}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/M_INFL/2.0_supps.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/M_INFL/5.0_supps.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/M_INFL/8.0_supps.jpg"}
+    \end{subfigure}
+\end{adjustbox}
+\caption{Social supports with different influencer rate budgets, where consumer rate budget = 5.0}
+\label{fig:M_INFL_supps}
+\end{figure}
+
+\Cref{fig:M_INFL_supps} shows the social supports for different influencer rate budgets. Upon immediate visual inspection, it is perhaps tempting to say that the case in which the influencer rate budget is high (the rightmost graph) is the closest to the empirical results, since we can observe what seems like a sharp exponential decrease. However, this sharp exponential decrease is just the decrease from influencer to producer social supports; after that, no such decrease is observed, and the negative exponential trend is not found within the rest of the producer social supports.
+
+Therefore, the case where the influencer and consumer rate budgets are equal (the middle graph) can still be taken as the closest case to the empirical values, based on the previous results from the consumer allocation heatmaps.
+
+\subsubsection{Perfect and limited information}
+
+\begin{figure}[h]
+    \centering
+\begin{adjustbox}{max width=1.5\textwidth,center}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/lim/1_supps.jpg"}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{"figures/lim/2_supps.jpg"}
+    \end{subfigure}
+\end{adjustbox}
+\caption{Social supports for perfect vs limited information}
+\label{fig:lim_supps}
+\end{figure}
+
+\Cref{fig:lim_supps} shows the social supports in the case where the producers have perfect information to all consumer social supports, as well as the case where they have limited information to only the influencer's social support. Unlike the consumer allocation heatmaps in which the information access did not play a major role, here we see a big difference; the limited information graph matches the negative exponential trend in the empirical graph significantly more closely than the perfect information graph. Thus, we can conclude that the producers do indeed optimize moreso for the influencer's social support than for all consumers, and the limited information model is a more accurate representation of Twitter as a content market.
+
+\pagebreak
 
 \section{Conclusion}
 

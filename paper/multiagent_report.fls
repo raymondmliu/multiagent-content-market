@@ -703,8 +703,8 @@ INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
-OUTPUT multiagent_report.toc
 INPUT /usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+OUTPUT multiagent_report.toc
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/cm/cmti10.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
@@ -860,6 +860,126 @@ INPUT ./figures/lim/colormap.jpg
 INPUT figures/lim/colormap.jpg
 INPUT ./figures/lim/colormap.jpg
 INPUT ./figures/lim/colormap.jpg
+INPUT ./figures/rachel_heatmap.png
+INPUT ./figures/rachel_heatmap.png
+INPUT figures/rachel_heatmap.png
+INPUT ./figures/rachel_heatmap.png
+INPUT ./figures/rachel_heatmap.png
+INPUT ./figures/f/descending rapidly_heatmap.jpg
+INPUT ./figures/f/descending rapidly_heatmap.jpg
+INPUT figures/f/descending rapidly_heatmap.jpg
+INPUT ./figures/f/descending rapidly_heatmap.jpg
+INPUT ./figures/f/descending rapidly_heatmap.jpg
+INPUT ./figures/f/linear_heatmap.jpg
+INPUT ./figures/f/linear_heatmap.jpg
+INPUT figures/f/linear_heatmap.jpg
+INPUT ./figures/f/linear_heatmap.jpg
+INPUT ./figures/f/linear_heatmap.jpg
+INPUT ./figures/f/descending slowly_heatmap.jpg
+INPUT ./figures/f/descending slowly_heatmap.jpg
+INPUT figures/f/descending slowly_heatmap.jpg
+INPUT ./figures/f/descending slowly_heatmap.jpg
+INPUT ./figures/f/descending slowly_heatmap.jpg
+INPUT ./figures/g/descending rapidly_heatmap.jpg
+INPUT ./figures/g/descending rapidly_heatmap.jpg
+INPUT figures/g/descending rapidly_heatmap.jpg
+INPUT ./figures/g/descending rapidly_heatmap.jpg
+INPUT ./figures/g/descending rapidly_heatmap.jpg
+INPUT ./figures/g/linear_heatmap.jpg
+INPUT ./figures/g/linear_heatmap.jpg
+INPUT figures/g/linear_heatmap.jpg
+INPUT ./figures/g/linear_heatmap.jpg
+INPUT ./figures/g/linear_heatmap.jpg
+INPUT ./figures/g/descending slowly_heatmap.jpg
+INPUT ./figures/g/descending slowly_heatmap.jpg
+INPUT figures/g/descending slowly_heatmap.jpg
+INPUT ./figures/g/descending slowly_heatmap.jpg
+INPUT ./figures/g/descending slowly_heatmap.jpg
+INPUT ./figures/M_INFL/4.0_heatmap.jpg
+INPUT ./figures/M_INFL/4.0_heatmap.jpg
+INPUT figures/M_INFL/4.0_heatmap.jpg
+INPUT ./figures/M_INFL/4.0_heatmap.jpg
+INPUT ./figures/M_INFL/4.0_heatmap.jpg
+INPUT ./figures/M_INFL/5.0_heatmap.jpg
+INPUT ./figures/M_INFL/5.0_heatmap.jpg
+INPUT figures/M_INFL/5.0_heatmap.jpg
+INPUT ./figures/M_INFL/5.0_heatmap.jpg
+INPUT ./figures/M_INFL/5.0_heatmap.jpg
+INPUT ./figures/M_INFL/6.0_heatmap.jpg
+INPUT ./figures/M_INFL/6.0_heatmap.jpg
+INPUT figures/M_INFL/6.0_heatmap.jpg
+INPUT ./figures/M_INFL/6.0_heatmap.jpg
+INPUT ./figures/M_INFL/6.0_heatmap.jpg
+INPUT ./figures/lim/1_heatmap.jpg
+INPUT ./figures/lim/1_heatmap.jpg
+INPUT figures/lim/1_heatmap.jpg
+INPUT ./figures/lim/1_heatmap.jpg
+INPUT ./figures/lim/1_heatmap.jpg
+INPUT ./figures/lim/2_heatmap.jpg
+INPUT ./figures/lim/2_heatmap.jpg
+INPUT figures/lim/2_heatmap.jpg
+INPUT ./figures/lim/2_heatmap.jpg
+INPUT ./figures/lim/2_heatmap.jpg
+INPUT ./figures/rachel_supps.png
+INPUT ./figures/rachel_supps.png
+INPUT figures/rachel_supps.png
+INPUT ./figures/rachel_supps.png
+INPUT ./figures/rachel_supps.png
+INPUT ./figures/f/descending rapidly_supps.jpg
+INPUT ./figures/f/descending rapidly_supps.jpg
+INPUT figures/f/descending rapidly_supps.jpg
+INPUT ./figures/f/descending rapidly_supps.jpg
+INPUT ./figures/f/descending rapidly_supps.jpg
+INPUT ./figures/f/linear_supps.jpg
+INPUT ./figures/f/linear_supps.jpg
+INPUT figures/f/linear_supps.jpg
+INPUT ./figures/f/linear_supps.jpg
+INPUT ./figures/f/linear_supps.jpg
+INPUT ./figures/f/descending slowly_supps.jpg
+INPUT ./figures/f/descending slowly_supps.jpg
+INPUT figures/f/descending slowly_supps.jpg
+INPUT ./figures/f/descending slowly_supps.jpg
+INPUT ./figures/f/descending slowly_supps.jpg
+INPUT ./figures/g/descending rapidly_supps.jpg
+INPUT ./figures/g/descending rapidly_supps.jpg
+INPUT figures/g/descending rapidly_supps.jpg
+INPUT ./figures/g/descending rapidly_supps.jpg
+INPUT ./figures/g/descending rapidly_supps.jpg
+INPUT ./figures/g/linear_supps.jpg
+INPUT ./figures/g/linear_supps.jpg
+INPUT figures/g/linear_supps.jpg
+INPUT ./figures/g/linear_supps.jpg
+INPUT ./figures/g/linear_supps.jpg
+INPUT ./figures/g/descending slowly_supps.jpg
+INPUT ./figures/g/descending slowly_supps.jpg
+INPUT figures/g/descending slowly_supps.jpg
+INPUT ./figures/g/descending slowly_supps.jpg
+INPUT ./figures/g/descending slowly_supps.jpg
+INPUT ./figures/M_INFL/2.0_supps.jpg
+INPUT ./figures/M_INFL/2.0_supps.jpg
+INPUT figures/M_INFL/2.0_supps.jpg
+INPUT ./figures/M_INFL/2.0_supps.jpg
+INPUT ./figures/M_INFL/2.0_supps.jpg
+INPUT ./figures/M_INFL/5.0_supps.jpg
+INPUT ./figures/M_INFL/5.0_supps.jpg
+INPUT figures/M_INFL/5.0_supps.jpg
+INPUT ./figures/M_INFL/5.0_supps.jpg
+INPUT ./figures/M_INFL/5.0_supps.jpg
+INPUT ./figures/M_INFL/8.0_supps.jpg
+INPUT ./figures/M_INFL/8.0_supps.jpg
+INPUT figures/M_INFL/8.0_supps.jpg
+INPUT ./figures/M_INFL/8.0_supps.jpg
+INPUT ./figures/M_INFL/8.0_supps.jpg
+INPUT ./figures/lim/1_supps.jpg
+INPUT ./figures/lim/1_supps.jpg
+INPUT figures/lim/1_supps.jpg
+INPUT ./figures/lim/1_supps.jpg
+INPUT ./figures/lim/1_supps.jpg
+INPUT ./figures/lim/2_supps.jpg
+INPUT ./figures/lim/2_supps.jpg
+INPUT figures/lim/2_supps.jpg
+INPUT ./figures/lim/2_supps.jpg
+INPUT ./figures/lim/2_supps.jpg
 INPUT multiagent_report.aux
 INPUT ./multiagent_report.out
 INPUT ./multiagent_report.out

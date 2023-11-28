@@ -1,18 +1,29 @@
-\contentsline {section}{\numberline {1}Summary}{2}{section.1}%
-\contentsline {section}{\numberline {2}Model}{4}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Background}{4}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Mathematical intuition}{5}{subsection.2.2}%
-\contentsline {subsubsection}{\numberline {2.2.1}Consumer utility}{6}{subsubsection.2.2.1}%
-\contentsline {subsubsection}{\numberline {2.2.2}Social support}{7}{subsubsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.3}The optimization problem}{8}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}Perfect and limited information}{9}{subsection.2.4}%
-\contentsline {section}{\numberline {3}Multiagent model}{9}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Parameters}{10}{subsection.3.1}%
-\contentsline {section}{\numberline {4}Results}{11}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Community size}{14}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Outside sources}{15}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Consumer interest function}{16}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Producer interest function}{17}{subsection.4.4}%
-\contentsline {subsection}{\numberline {4.5}Rate budgets}{18}{subsection.4.5}%
-\contentsline {subsection}{\numberline {4.6}Limited information}{19}{subsection.4.6}%
-\contentsline {section}{\numberline {5}Conclusion}{22}{section.5}%
+\contentsline {section}{\numberline {1}Summary}{3}{section.1}%
+\contentsline {section}{\numberline {2}Model}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Background}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Mathematical intuition}{6}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Consumer utility}{7}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Social support}{8}{subsubsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.3}The optimization problem}{9}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Perfect and limited information}{10}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Multiagent model}{11}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Parameters}{11}{subsection.3.1}%
+\contentsline {section}{\numberline {4}Results}{13}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Community size}{15}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Outside sources}{17}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Consumer interest function}{18}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Producer interest function}{19}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Rate budgets}{19}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Limited information}{21}{subsection.4.6}%
+\contentsline {section}{\numberline {5}Comparison with empirical results}{23}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Consumer allocations}{24}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Consumer interest functions}{25}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}Producer interest functions}{25}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}Influencer rate budgets}{26}{subsubsection.5.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Perfect and limited information}{27}{subsubsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.2}Social Support}{27}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Consumer interest functions}{28}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Producer interest functions}{29}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}Influencer rate allocations}{29}{subsubsection.5.2.3}%
+\contentsline {subsubsection}{\numberline {5.2.4}Perfect and limited information}{30}{subsubsection.5.2.4}%
+\contentsline {section}{\numberline {6}Conclusion}{31}{section.6}%

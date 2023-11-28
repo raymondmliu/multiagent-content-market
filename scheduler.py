@@ -52,6 +52,8 @@ class CustomScheduler(BaseScheduler):
         return step_converged
 
     def converged(self, arr1, arr2):
-        return np.allclose(arr1, arr2)
+        rtol=1e-02 # default: 1e-05
+        atol=1e-03 # default: 1--08
+        return np.allclose(arr1, arr2, rtol=rtol, atol=atol)
 
         
